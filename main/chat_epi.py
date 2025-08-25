@@ -47,9 +47,9 @@ gen_settings = ExLlamaV2Sampler.Settings(
 # -------------------
 
 epi_file_paths = [
-    "epi_models/xyw/m1.cmp",
-    "epi_models/xyw/m2.cmp",
-    "epi_models/xyw/m3.cmp"
+    "../epi_models/xyw/m1.cmp",
+    "../epi_models/xyw/m2.cmp",
+    "../epi_models/xyw/m3.cmp"
 ]
 
 all_epi_models = []

@@ -1,0 +1,8 @@
+# Created by venv; see https://docs.python.org/3/library/venv.html
+data/**
+models/**
+venv/
+activate_venv.sh
+.idea
+__pycache__/
+test/
