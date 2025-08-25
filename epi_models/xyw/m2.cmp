@@ -1,0 +1,9 @@
+model model2 3000 { 
+compartment Y "Y individuals" 0 
+compartment X "people who are X" 175 
+compartment Q "Quarantined individuals" 0 
+flow X_Y ( X ) ( Y ) ( func X_Y_Rate1 "W*1" ) 
+flow X_Q ( X ) ( Q ) ( func X_Q_Rate "V*1" ) 
+param W 0.7 
+param V 0.96 
+}

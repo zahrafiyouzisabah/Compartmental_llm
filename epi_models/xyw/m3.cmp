@@ -1,0 +1,9 @@
+model model3 3000 { 
+compartment Y "people who are Y" 0 
+compartment X "X people" 175 
+compartment Q "people who are Q" 0 
+flow Y_X ( Y ) ( X ) ( func Y_X_Rate "M*1" ) 
+flow X_Q ( X ) ( Q ) ( func X_Q_Rate "V*1" ) 
+param M 0.2 
+param V 0.96 
+}
