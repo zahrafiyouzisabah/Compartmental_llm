@@ -1,0 +1,26 @@
+model Carol_m1 1000 { 
+compartment Susceptible "Susceptible individuals" 500 
+compartment Vaccinated "Vaccinated individuals" 100 
+compartment Exposed "Exposed individuals" 100 
+compartment Exposed_Quarantined "Exposed individuals who are quarantined" 50 
+compartment Infectious "Infectious individuals" 200 
+compartment Recovered "Recovered individuals" 50 
+
+param lambda "Vaccination rate" 0.1 
+param epsilon "Return to susceptibility rate" 0.05 
+param beta "Transmission rate per contact" 0.3 
+param eta "infectious rate" 0.2 
+param alpha "infected rate for exposed" 0.15 
+param xi "Recovery rate" 0.1 
+param sigma "Loss of immunity rate" 0.05 
+param N "Total population" 1000 
+
+flow s_v ( Susceptible ) ( Vaccinated ) ( func s_v_rate "lambda * 2" ) 
+flow v_s ( Vaccinated ) ( Susceptible ) ( func v_s_rate "epsilon * V" ) 
+flow s_e ( Susceptible ) ( Exposed ) ( func s_e_rate "(beta * E) / N * S" ) 
+flow s_eq ( Susceptible ) ( Exposed_Quarantined ) ( func s_eq_rate "alpha * EQ" ) 
+flow e_i ( Exposed ) ( Infectious ) ( func e_i_rate "eta * I" ) 
+flow eq_i ( Exposed_Quarantined ) ( Infectious ) ( func eq_i_rate "0.5 * eta * I" ) 
+flow i_r ( Infectious ) ( Recovered ) ( func i_r_rate "xi * R" ) 
+flow r_s ( Recovered ) ( Susceptible ) ( func r_s_rate "sigma * S" ) 
+}

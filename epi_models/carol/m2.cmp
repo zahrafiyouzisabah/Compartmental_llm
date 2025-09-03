@@ -1,0 +1,29 @@
+model Carol_m2 1000 { 
+compartment Susceptible "Susceptible individuals" 600 
+compartment Vaccinated "Vaccinated individuals" 100 
+compartment Exposed "Exposed individuals" 100 
+compartment Infectious_asymptomatic "Infectious with no symptoms" 50 
+compartment Infectious_moderate "Infectious with moderate symptoms" 50 
+compartment Infectious_severe "Infectious with severe symptoms" 50 
+compartment Recovered "Recovered individuals" 30 
+compartment Deceased "Deceased individuals" 20 
+
+param lambda "Vaccination rate" 0.1 
+param epsilon "Return to susceptibility rate" 0.05 
+param beta "Transmission rate per contact" 0.3 
+param eta "Progression rate from exposed ifto infectious" 0.04 
+param xi "Recovery rate" 0.8 
+param nu "Death rate from severe infection" 0.02 
+param N "Total population" 1000 
+
+flow s_v ( Susceptible ) ( Vaccinated ) ( func v_s_rate "lambda * 2" ) 
+flow v_s ( Vaccinated ) ( Susceptible ) ( func s_v_rate "epsilon * V" ) 
+flow s_e ( Susceptible ) ( Exposed ) ( func s_e_rate "(beta * E) / N * S" ) 
+flow e_ia ( Exposed ) ( Infectious_asymptomatic ) ( func e_ia_rate "eta * I_A" ) 
+flow e_im ( Exposed ) ( Infectious_moderate ) ( func e_im_rate "eta * I_M" ) 
+flow e_is ( Exposed ) ( Infectious_severe ) ( func e_is_rate "eta * I_S" ) 
+flow ia_r ( Infectious_asymptomatic ) ( Recovered ) ( func ia_r_rate "xi * I_A" ) 
+flow im_r ( Infectious_moderate ) ( Recovered ) ( func im_r_rate "xi * I_M" ) 
+flow is_r ( Infectious_severe ) ( Recovered ) ( func is_r_rate "xi * I_S" ) 
+flow is_d ( Infectious_severe ) ( Deceased ) ( func is_d_rate "nu * 20" ) 
+}

@@ -1,0 +1,28 @@
+model Carol_m3 1000 { 
+compartment Susceptible "Susceptible individuals" 400 
+compartment Exposed "Exposed individuals" 100 
+compartment Infectious_isolated "Isolated infectious individuals" 150 
+compartment Infectious_not_isolated "Non-isolated infectious individuals" 100 
+compartment Hospital_no_access "Severe cases with no hospital access" 150 
+compartment Hospitalized "Severe cases who have been hospitalized" 50 
+compartment Recovered "Recovered individuals" 30 
+compartment Deceased "Deceased individuals" 20 
+
+param alpha "Rate at which susceptible individuals become exposed" 0.05 
+param omega "Progression rate from exposed to infectious" 0.2 
+param kappa "Proportion of isolated infectious individuals with hospital access" 0.7 
+param psi "Recovery rate from both hospital and no hospital" 0.1 
+param nu "Death rate" 0.05 
+
+
+flow s_e ( Susceptible ) ( Exposed ) ( func s_e_rate "alpha * S" ) 
+flow e_i_iso ( Exposed ) ( Infectious_isolated ) ( func e_i_iso_rate "omega * I_I" ) 
+flow e_i_noiso ( Exposed ) ( Infectious_not_isolated ) ( func e_i_noiso_rate "omega * I_NI * 7" ) 
+flow iso_nh ( Infectious_isolated ) ( Hospital_no_access ) ( func iso_nh_rate "(1 - kappa) * I_I" ) 
+flow iso_hosp ( Infectious_isolated ) ( Hospitalized ) ( func iso_hosp_rate "kappa * I_I" ) 
+flow nh_rec ( Hospital_no_access ) ( Recovered ) ( func nh_rec_rate "psi * HNA" ) 
+flow hosp_rec ( Hospitalized ) ( Recovered ) ( func hosp_rec_rate "psi * H" ) 
+flow hosp_death ( Hospitalized ) ( Deceased ) ( func hosp_death_rate "nu * H" ) 
+flow Nohosp_death ( Hospital_no_access ) ( Deceased ) ( func Nohosp_death_rate "nu * HNA * 100" ) 
+
+}
