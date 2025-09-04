@@ -1,6 +1,7 @@
 import time
 from prompt_templates import (
     compartmental_system_prompt,
+    compartmental_prototyping_template,
     llama_template
 )
 from config import ExLlamaArguments
@@ -47,9 +48,9 @@ gen_settings = ExLlamaV2Sampler.Settings(
 # -------------------
 
 epi_file_paths = [
-    "../epi_models/xyw/m1.cmp",
-    "../epi_models/xyw/m2.cmp",
-    "../epi_models/xyw/m3.cmp"
+    "../epi_models/carol/m1.cmp",
+    "../epi_models/carol/m2.cmp",
+    "../epi_models/carol/m3.cmp"
 ]
 
 all_epi_models = []
@@ -69,12 +70,9 @@ epidemiology_system_prompt = (
     "You help design new compartmental epidemiology models by reusing features from existing models."
 )
 # --- Conversation history ---
-conversation_history = f"""
-I have {len(epi_file_paths)} compartmental epidemiology models. 
-Please extract reusable features/components.
+conversation_history = compartmental_prototyping_template.format(input_models=all_epi_models)
 
-{"\n\n".join(all_epi_models)}
-"""
+
 
 # --- Interactive loop ---
 while True:
@@ -82,7 +80,7 @@ while True:
         task = progress.add_task("Creating jobs", total=1)   # >>> NEW
         # Format prompt
         input_prompt = llama_template.format(
-            system_prompt=epidemiology_system_prompt,
+            system_prompt=compartmental_system_prompt,
             user_prompt=conversation_history
         )
         # Encode
