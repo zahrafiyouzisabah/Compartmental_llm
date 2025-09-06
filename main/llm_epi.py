@@ -2,7 +2,6 @@ import time
 from prompt_templates import (
     compartmental_system_prompt,
     compartmental_prototyping_template,
-    multi_step_compartmental_prototyping_template,
     llama_template
 )
 from config import ExLlamaArguments
@@ -65,28 +64,18 @@ for path in epi_file_paths:
 # Conversation setup
 # -------------------
 
-prompt_index = 0
-previous_llm_response = ""  # start empty
+# --- System role ---
+epidemiology_system_prompt = (
+    "You are an expert in epidemiology modeling. "
+    "You help design new compartmental epidemiology models by reusing features from existing models."
+)
+# --- Conversation history ---
+conversation_history = compartmental_prototyping_template.format(input_models=all_epi_models)
+
 
 
 # --- Interactive loop ---
 while True:
-    # Format the current step prompt
-    if prompt_index < len(multi_step_compartmental_prototyping_template):
-        current_template = multi_step_compartmental_prototyping_template[prompt_index]
-        user_input = current_template.format(
-            input_models=all_epi_models,
-            previous_llm_response=previous_llm_response or "N/A"
-        )
-        print(f"\n[Step {prompt_index+1}/{len(multi_step_compartmental_prototyping_template)} Prompt Sent]\n")
-    else:
-        # After steps are done, switch to user input
-        user_input = input("\nYour reply (or type 'exit'): ").strip()
-        if user_input.lower() == "exit":
-            break
-
-    # Add user input to conversation history
-    conversation_history = f"\n\nUser: {user_input}"
     with exllamav2.util.get_basic_progress() as progress:  # >>> NEW
         task = progress.add_task("Creating jobs", total=1)   # >>> NEW
         # Format prompt
@@ -130,7 +119,7 @@ while True:
             for result in results:
                 if result["eos"]:
                     response_text = result["full_completion"]
-                    # print(response_text)
+                    print(response_text)
                     # Measure performance
                     num_completions += 1
                     elapsed_time = time.time() - time_begin
@@ -145,10 +134,11 @@ while True:
                     break
             progress.update(task, advance=len(results))
 
-    # Print and store response
-    print(f"\n[Step {prompt_index+1} LLM Response]\n{response_text}\n")
+    # --- Ask user for next step ---
+    user_input = input("\nYour reply (or type 'exit'): ").strip()
+    if user_input.lower() == "exit":
+        break
 
-    previous_llm_response = response_text  # update for next step
-    prompt_index += 1
-
+    # Add user input to conversation history
+    conversation_history += f"\n\nUser: {user_input}"
 

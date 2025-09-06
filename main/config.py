@@ -7,7 +7,8 @@ class ExLlamaArguments:
     # Used for inference with ExLlama-V2
     model_dir: Optional[str] = field(
         default="../models/Meta-Llama-3.1-70B-Instruct-GPTQ-INT4/",
-        metadata={"help": "Path to the local model directory."}
+        #default="../models/DeepSeek-V3.1",
+	metadata={"help": "Path to the local model directory."}
     )
 
     # Used for training with Huggingface
