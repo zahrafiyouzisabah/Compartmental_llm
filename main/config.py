@@ -53,7 +53,7 @@ class ExLlamaArguments:
     )
 
     max_new_tokens: Optional[int] = field(
-        default=1024,
+        default=2048,
         metadata={"help": "Maximum number of new tokens to generate."}
     )
 
