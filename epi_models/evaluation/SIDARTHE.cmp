@@ -1,0 +1,47 @@
+model SIDARTHE 1 {
+    compartment S "Susceptible individuals" 59999777.0/60e6
+    compartment I "Infected (asymptomatic infected, undetected) individuals" 200.0/60e6
+    compartment D "Diagnosed (asymptomatic infected, detected) individuals" 20.0/60e6
+    compartment A "Ailing (symptomatic infected, undetected) individuals" 1.0/60e6
+    compartment R "Recognized (symptomatic infected, detected) individuals" 2.0/60e6
+    compartment T "Threatened (infected with life-threatening symptoms, detected) individuals" 0
+    compartment H "Healed (recovered) individuals" 0
+    compartment E "Extinct (dead) individuals" 0
+    
+    param alpha "Transmission rate due to Infected" 0.570
+    param beta "Transmission rate due to Diagnosed" 0.011
+    param gamma "Transmission rate due to Ailing" 0.456
+    param delta "Transmission rate due to Recognized" 0.011
+    param epsilon "Detection probability for asymptomatic cases" 0.171
+    param zeta "Progression rate from Infected to Ailing" 0.125
+    param eta "Progression rate from Diagnosed to Recognized" 0.125
+    param theta "Detection probability for symptomatic cases" 0.371
+    param mu "Progression rate to life-threatening symptoms (undetected)" 0.012
+    param nu "Progression rate to life-threatening symptoms (detected)" 0.027
+    param tau "Mortality rate for life-threatening symptoms" 0.003
+    param lambda "Recovery rate for Infected individuals" 0.034
+    param kappa "Recovery rate for Ailing individuals" 0.017
+    param xi "Recovery rate for Recognized individuals" 0.017
+    param rho "Recovery rate for Diagnosed individuals" 0.034
+    param sigma "Recovery rate for Threatened individuals" 0.017
+    
+    flow s_to_i ( S ) ( I ) ( func s_to_i_rate "alpha*I + beta*D + gamma*A + delta*R" )
+
+	flow i_to_d ( I ) ( D ) ( func i_to_d_rate "epsilon*I" )
+	flow i_to_a ( I ) ( A ) ( func i_to_a_rate "zeta*I" )
+	flow i_to_h ( I ) ( H ) ( func i_to_h_rate "lambda*I" )
+
+	flow d_to_r ( D ) ( R ) ( func d_to_r_rate "eta*D" )
+	flow d_to_e ( D ) ( H ) ( func d_to_e_rate "rho*D" )
+
+	flow a_to_r ( A ) ( R ) ( func a_to_r_rate "theta*A" )
+	flow a_to_e ( A ) ( H ) ( func a_to_e_rate "kappa*A" )
+	flow a_to_t ( A ) ( T ) ( func a_to_t_rate "mu*A" )
+	
+	flow r_to_e ( R ) ( H ) ( func r_to_e_rate "xi*R" )
+	flow r_to_t ( R ) ( T ) ( func r_to_t_rate "nu*R" )
+
+	flow t_to_e ( T ) ( H ) ( func t_to_e_rate "sigma*T" )
+	flow t_to_h ( T ) ( E ) ( func t_to_h_rate "tau*T" )
+
+}

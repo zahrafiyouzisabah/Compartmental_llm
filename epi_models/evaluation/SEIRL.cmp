@@ -1,0 +1,19 @@
+model SEIRL 1000 {
+
+    compartment S "Susceptible individuals" 900
+    compartment E "Exposed individuals (not yet infectious)" 20
+    compartment I "Infectious individuals" 30
+    compartment L "Ill but no longer infectious (e.g. hospitalized)" 30
+    compartment R "Recovered individuals" 20
+
+    param beta "Transmission rate" 1.3
+    param epsilon "Rate from exposed to infectious" 0.23
+    param gamma "Rate from infectious to ill" 0.322
+    param delta "Recovery rate from ill" 0.03
+    param N "Total population" 1000
+
+    flow s_e (S) (E) (func s_e_rate "(beta * I * S) / N")
+    flow e_i (E) (I) (func e_i_rate "epsilon * E")
+    flow i_l (I) (L) (func i_l_rate "gamma * I")
+    flow l_r (L) (R) (func l_r_rate "delta * L")
+}

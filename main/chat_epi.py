@@ -49,9 +49,12 @@ gen_settings = ExLlamaV2Sampler.Settings(
 # -------------------
 
 epi_file_paths = [
-    "../epi_models/carol/m1.cmp",
-    "../epi_models/carol/m2.cmp",
-    "../epi_models/carol/m3.cmp"
+#    "../epi_models/carol/m1.cmp",
+#    "../epi_models/carol/m2.cmp",
+#    "../epi_models/carol/m3.cmp",
+"../epi_models/evaluation/SEIRL.cmp",
+"../epi_models/evaluation/SIDARTHE.cmp",
+"../epi_models/evaluation/SIRD.cmp"
 ]
 
 all_epi_models = []
@@ -139,6 +142,7 @@ while True:
                     print()
                     print("---------------------------------------------------------------------------")
                     print(f"Current batch size: {bsz}")
+                    print(f"Runtime: {elapsed_time:.2f} seconds")
                     print(f"Avg. completions/minute: {rpm:.2f}")
                     print(f"Avg. output tokens/second: {tps:.2f}")
                     print("---------------------------------------------------------------------------")

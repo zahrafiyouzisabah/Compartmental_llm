@@ -48,8 +48,8 @@ gen_settings = ExLlamaV2Sampler.Settings(
 # -------------------
 
 epi_file_paths = [
-    "../epi_models/carol/m1.cmp",
     "../epi_models/carol/m2.cmp",
+    "../epi_models/carol/m1.cmp",
     "../epi_models/carol/m3.cmp"
 ]
 
@@ -64,11 +64,6 @@ for path in epi_file_paths:
 # Conversation setup
 # -------------------
 
-# --- System role ---
-epidemiology_system_prompt = (
-    "You are an expert in epidemiology modeling. "
-    "You help design new compartmental epidemiology models by reusing features from existing models."
-)
 # --- Conversation history ---
 conversation_history = compartmental_prototyping_template.format(input_models=all_epi_models)
 

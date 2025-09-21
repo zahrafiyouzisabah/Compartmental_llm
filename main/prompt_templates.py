@@ -27,8 +27,9 @@ The input is a set of epidemiological compartmental models. These models may var
 ** Feature Relationships **
     [Describe any constraints, dependencies, or conflicts detected between features.]
 ** Prototype Model **
-    [List the selected features]
-    [Present the assembled prototype model composed of selected features. Ensure the structure is valid considering the feature relationships.] """
+   [List of feature names chosen] 
+   [Present the final prototype model]    
+ """
 
 multi_step_compartmental_prototyping_template = [
     """

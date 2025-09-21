@@ -1,0 +1,15 @@
+model SIRD 1000 {
+    compartment S "Susceptible individuals" 999
+    compartment I "Infected individuals" 1
+    compartment R "Recovered individuals" 0
+    compartment D "Deceased individuals" 0
+
+    param alpha "Transmission rate" 0.191
+    param beta "Recovery rate" 0.064
+    param gamma "Mortality rate" 0.01
+    param N "Total population" 1000
+
+    flow s_i (S) (I) (func s_to_i_rate "(alpha / N) * S * I")
+    flow i_r (I) (R) (func i_to_r_rate "beta * I")
+    flow i_d (I) (D) (func i_to_d_rate "gamma * I")
+}
