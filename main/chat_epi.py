@@ -99,6 +99,11 @@ while True:
         )
         # Encode
         input_ids = tokenizer.encode(input_prompt, encode_special_tokens=True, add_bos=False)
+        
+        input_tokens = input_ids.shape[1]
+        #print("Prompt preview:", repr(input_prompt[:200]))  # first 200 chars
+        #print("Token IDs:", input_ids[:50])  # first 50 token IDs
+        #print("Number of tokens:", len(input_ids))
 
         # Job
         job = ExLlamaV2DynamicJob(
@@ -143,6 +148,8 @@ while True:
                     print("---------------------------------------------------------------------------")
                     print(f"Current batch size: {bsz}")
                     print(f"Runtime: {elapsed_time:.2f} seconds")
+                    print(f"Prompt tokens: {input_tokens}")
+                    print(f"Number of Tokens: {num_tokens}")
                     print(f"Avg. completions/minute: {rpm:.2f}")
                     print(f"Avg. output tokens/second: {tps:.2f}")
                     print("---------------------------------------------------------------------------")
@@ -154,5 +161,6 @@ while True:
 
     previous_llm_response = response_text  # update for next step
     prompt_index += 1
+
 
 
